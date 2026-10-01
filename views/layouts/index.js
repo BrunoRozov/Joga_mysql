@@ -10,6 +10,7 @@ app.engine('hbs', hbs.engine({
     extname: 'hbs',
     defaultLayout: __dirname + '/views/layouts/',
 }))
+app.use(express.static('public'))
 
 const mysql = require('mysql2')
 
