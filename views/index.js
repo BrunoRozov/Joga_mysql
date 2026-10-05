@@ -25,10 +25,18 @@ var con = mysql.createConnection({
 })
 
 con.connect((err) => {
-    if (err) throw err;
+    if (err) {
+        console.error('Andmebaasiga ühendamine ebaõnnestus:', err.message)
+        return
+    }
     console.log('Connected to joga_mysql db')
 })
 
-app.listen(3003, () => {
-    console.log('App is started at http://localhost:3003')
+const PORT = process.env.PORT || 3003
+const server = app.listen(PORT, () => {
+    console.log(`App is started at http://localhost:${PORT}`)
+})
+
+server.on('error', (err) => {
+    console.error(`Porti ${PORT} kuulamine ebaõnnestus:`, err.message)
 })
