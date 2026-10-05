@@ -4,13 +4,15 @@ const app = express()
 
 const path = require('path')
 const hbs = require('express-handlebars')
+
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'hbs')
 app.engine('hbs', hbs.engine({
     extname: 'hbs',
-    defaultLayout: __dirname + '/views/layouts/',
+    defaultLayout: 'main',
+    layoutsDir: __dirname + '/views/layouts/'
 }))
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 const mysql = require('mysql2')
 
@@ -30,6 +32,18 @@ con.connect((err) => {
         return
     }
     console.log('Connected to joga_mysql db')
+})
+
+app.get('/', (req, res) => {
+    let query = "SELECT * FROM article";
+    let articles = []
+    con.query,(query, (err, result) => {
+        if (err) throw err;
+        articles = result
+        res.render("index", {
+            articles: articles
+        })
+    })
 })
 
 const PORT = process.env.PORT || 3003
