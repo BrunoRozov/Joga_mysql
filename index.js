@@ -64,6 +64,33 @@ app.get('/article/:slug', (req, res) => {
   });
 });
 
+app.get('/author/:author_id', (req, res) => {
+  let author_name = '';
+  let articles = [];
+  
+  // Esimene päring - autori info
+  let query1 = `SELECT name FROM author WHERE id="${req.params.author_id}"`;
+  con.query(query1, (err, result) => {
+    if (err) throw err;
+    if (result.length > 0) {
+      author_name = result[0].name;
+    }
+    
+    // Teine päring - autori artikelid
+    let query2 = `SELECT * FROM article WHERE author_id="${req.params.author_id}"`;
+    con.query(query2, (err, result2) => {
+      if (err) throw err;
+      articles = result2;
+      
+      // Renderi author.hbs mall andmetega
+      res.render('author', {
+        author_name: author_name,
+        articles: articles
+      });
+    });
+  });
+});
+
 
 const PORT = process.env.PORT || 3003
 const server = app.listen(PORT, () => {
