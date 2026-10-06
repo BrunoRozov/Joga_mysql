@@ -53,8 +53,13 @@ app.get('/article/:slug', (req, res) => {
     if (err) throw err;
     article = result;
     console.log(article)
-    res.render('article', {
-      article: article
+    let query2 = `SELECT * FROM author WHERE id="${article[0].author_id}"`;
+    con.query(query2, (err, result2) => {
+      if (err) throw err;
+      article[0].author = result2[0].name;
+      res.render('article', {
+        article: article
+      });
     });
   });
 });
