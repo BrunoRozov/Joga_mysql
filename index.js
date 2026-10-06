@@ -35,16 +35,16 @@ con.connect((err) => {
 })
 
 app.get('/', (req, res) => {
-    let query = "SELECT * FROM article";
-    let articles = []
-    con.query,(query, (err, result) => {
-        if (err) throw err;
-        articles = result
-        res.render("index", {
-            articles: articles
-        })
-    })
-})
+  let query = 'SELECT * FROM article';
+  let articles = [];
+  con.query(query, (err, result) => {
+    if (err) throw err;
+    articles = result;
+    res.render('index', {
+      articles: articles
+    });
+  });
+});
 
 const PORT = process.env.PORT || 3003
 const server = app.listen(PORT, () => {
